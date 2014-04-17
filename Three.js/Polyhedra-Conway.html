@@ -18,6 +18,7 @@
 <script src="js/THREEx.WindowResize.js"></script>
 
 <script src="js/polyhedra.js"></script>
+<script src="js/ConwayNotation.js"></script>
 <!-- GUI for experimenting with values -->
 <script type='text/javascript' src='js/DAT.GUI.min.js'></script>
 
@@ -95,7 +96,7 @@ function init() {
     // CUSTOM //
     ////////////
 
-    this.parameters = { transparent: false, conway: "D" };
+    this.parameters = { transparent: false, conway: "" };
     this.polyhedronMesh = new THREE.Object3D();
     this.titleSprite = new THREE.Object3D();
     scene.add(this.polyhedronMesh);
@@ -119,29 +120,7 @@ function init() {
     var gui = new dat.GUI();
 
     gui.add(this.parameters, 'conway').name('Conway').onChange(function (value) {
-        var polyhedron;
-        switch (value.slice(-1)) {
-            case "T":
-                polyhedron = POLYHEDRA.Tetrahedron;
-                break;
-            case "C":
-                polyhedron = POLYHEDRA.Cube;
-                break;
-            case "O":
-                polyhedron = POLYHEDRA.Octahedron;
-                break;
-            case "D":
-                polyhedron = POLYHEDRA.Dodecahedron;
-                break;
-            case "I":
-                polyhedron = POLYHEDRA.Icosahedron;
-                break;
-            default:
-                console.error("Unknown");
-                return;
-        }
-        var operations = value.slice(0,-1);
-        displayPolyhedron(polyhedron);
+        displayPolyhedron(Conway.buildPolyhedron(value));
     });
 
     gui.add(this.parameters, "transparent")

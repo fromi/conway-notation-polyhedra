@@ -185,13 +185,13 @@ function polyhedronDataToMesh(data) {
     for (var i2 = 0; i2 < data.vertex.length; i2++) {
         var vMesh = vertexSingleMesh.clone();
         vMesh.position = vertex[i2];
-        THREE.GeometryUtils.merge(vertexAmalgam, vMesh);
+        //THREE.GeometryUtils.merge(vertexAmalgam, vMesh);
     }
     var vertexMesh = new THREE.Mesh(vertexAmalgam, vertexMaterial);
     polyhedron.add(vertexMesh);
 
     // convert edge data to cylinders
-    var edgeMaterial = new THREE.MeshLambertMaterial({color: 0x666666});
+    /*var edgeMaterial = new THREE.MeshLambertMaterial({color: 0x666666});
     var edgeAmalgam = new THREE.Geometry();
     for (var i3 = 0; i3 < data.edge.length; i3++) {
         var index0 = data.edge[i3][0];
@@ -200,7 +200,7 @@ function polyhedronDataToMesh(data) {
         THREE.GeometryUtils.merge(edgeAmalgam, eMesh);
     }
     var edgeMesh = new THREE.Mesh(edgeAmalgam, edgeMaterial);
-    polyhedron.add(edgeMesh);
+    polyhedron.add(edgeMesh);*/
 
     // convert face data to a single (triangulated) geometry
     var faceMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors, side: THREE.FrontSide, transparent: this.parameters.transparent, opacity: 0.8 });
@@ -220,9 +220,11 @@ function polyhedronDataToMesh(data) {
     geometry.vertices = vertex;
     var faceIndex = 0;
     for (var faceNum = 0; faceNum < data.face.length; faceNum++) {
+        var color = new THREE.Color('#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6));
         for (var i4 = 0; i4 < data.face[faceNum].length - 2; i4++) {
             geometry.faces[faceIndex] = new THREE.Face3(data.face[faceNum][0], data.face[faceNum][i4 + 1], data.face[faceNum][i4 + 2]);
-            geometry.faces[faceIndex].color = faceColors[data.face[faceNum].length];
+            //geometry.faces[faceIndex].color = faceColors[data.face[faceNum].length];
+            geometry.faces[faceIndex].color = color;
             faceIndex++;
         }
     }
@@ -234,11 +236,11 @@ function polyhedronDataToMesh(data) {
     faces.scale.multiplyScalar(1.01);
     polyhedron.add(faces);
 
-    var interiorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors, side: THREE.BackSide });
+    /*var interiorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors, side: THREE.BackSide });
 
     var interiorFaces = new THREE.Mesh(geometry, interiorMaterial);
     interiorFaces.scale.multiplyScalar(0.99);
-    polyhedron.add(interiorFaces);
+    polyhedron.add(interiorFaces);*/
 
     return polyhedron;
 }
